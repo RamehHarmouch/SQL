@@ -1,0 +1,23 @@
+const express = require("express");
+const app = express();
+
+app.post('/procedure', async (req, res) => {
+    try {
+        try {
+            await pool.connect();
+        } catch (error) {
+            res.status(500).json(error);
+        }
+        
+        const result = await pool.request().execute(`GetFirstName`);
+        const summary = {
+            Department: result.recordsets[0],
+            Job: result.recordsets[1],
+        };
+
+        res.json(summary);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
+app.listen(8085);
